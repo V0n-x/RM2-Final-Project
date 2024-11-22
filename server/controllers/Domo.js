@@ -39,7 +39,7 @@ const delDomo = async (req, res) => {
     return res.status(201).json({ status: `Deleted Domo ${toDelete.name}` });
   } catch (err) {
     return res.status(500).json({ error: 'An error occurred deleting domo!' });
-};
+  }
 };
 
 const getDomos = async (req, res) => {
