@@ -1,5 +1,5 @@
 const http = require('http');
-const server = require('socket.io');
+const { Server } = require('socket.io');
 
 let io;
 
@@ -8,5 +8,20 @@ const handleChatMSG = (msg) => {
 };
 
 const socketSetup = (app) => {
-  const server = http.createServer();
+  const server = http.createServer(app);
+  io = new Server(server);
+
+  io.on('connection', (socket) => {
+    console.log('user connected!');
+
+    socket.on('disconnect', () => {
+      console.log('user disconnected!');
+    });
+
+    socketSetup.on('chat meessage', handleChatMSG);
+  });
+
+  return server;
 };
+
+module.exports = socketSetup;
