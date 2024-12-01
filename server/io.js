@@ -10,7 +10,7 @@ const handleChatMSG = (socket, msg) => {
   });
 };
 
-const hanleRoomChange = (socket, roomName) => {
+const handleRoomChange = (socket, roomName) => {
   socket.rooms.forEach((room) => {
     if (room === socket.id) return;
     socket.leave(room);
@@ -31,7 +31,7 @@ const socketSetup = (app) => {
       console.log('user disconnected');
     });
 
-    socket.on('chat message', (msg) => handleChatMessage(socket, msg));
+    socket.on('chat message', (msg) => handleChatMSG(socket, msg));
     socket.on('room change', (room) => handleRoomChange(socket, room));
   });
 
