@@ -4,7 +4,7 @@ const { Server } = require('socket.io');
 let io;
 
 const handleChatMSG = (socket, msg) => {
-  socket.rooms.array.forEach((room) => {
+  socket.rooms.forEach((room) => {
     if (room === socket.id) return;
     io.to(room).emit('chat message', msg);
   });

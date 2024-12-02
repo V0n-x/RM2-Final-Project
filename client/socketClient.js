@@ -42,3 +42,9 @@ const handleChannelSelect = () => {
         }
     });
 }
+
+const socketInit = () => {
+    handleEditBox();
+    socket.on('chat message', displayMessage);
+    handleChannelSelect();
+};
