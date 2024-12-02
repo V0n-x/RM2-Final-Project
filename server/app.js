@@ -19,7 +19,7 @@ const socketSetup = require('./io.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/DomoMaker';
+const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/Showdown';
 
 mongoose.connect(dbURI).catch((err) => {
   if (err) {
@@ -48,7 +48,7 @@ redisClient.connect().then(() => {
     store: new RedisStore({
       client: redisClient,
     }),
-    secret: 'Domo Arigato',
+    secret: 'Bootleg Showdown',
     resave: false,
     saveUninitialized: false,
   }));
