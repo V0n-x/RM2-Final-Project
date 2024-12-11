@@ -52,12 +52,12 @@ const MonSchema = new mongoose.Schema({
 });
 
 MonSchema.statics.toAPI = (doc) => ({
-    name: doc.name,
-    species: doc.species,
-    efforts: doc.efforts,
-    ivs: doc.ivs,
-    level: doc.level,
-  });
+  name: doc.name,
+  species: doc.species,
+  efforts: doc.efforts,
+  ivs: doc.ivs,
+  level: doc.level,
+});
 
 const MonModel = mongoose.model('Mon', MonSchema);
 module.exports = MonModel;

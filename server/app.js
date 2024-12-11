@@ -44,9 +44,16 @@ redisClient.connect().then(() => {
   app.use(bodyParser.json());
 
   app.use((req, res, next) => {
-    res.setHeader("Content-Security-Policy", "default-src 'self'; connect-src 'self' https://pokeapi.co https://raw.githubusercontent.com;");
-    next();
-});
+    helmet.contentSecurityPolicy({
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", 'https://cdnjs.cloudflare.com', "'unsafe-inline'"], // Allow styles from self and CDN
+        imgSrc: ["'self'", 'https://raw.githubusercontent.com'], // Allow images from self and specified URL
+        connectSrc: ["'self'", 'https://pokeapi.co'], // Allow connections to pokeapi.co
+      // Add other directives as needed
+      },
+    })(req, res, next);
+  });
 
   app.use(session({
     key: 'sessionid',

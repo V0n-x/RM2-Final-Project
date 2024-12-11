@@ -1,4 +1,5 @@
 const models = require('../models');
+
 const { Account } = models;
 
 const loginPage = (req, res) => res.render('login');
@@ -55,22 +56,21 @@ const signup = async (req, res) => {
 };
 
 // acc updates
-const update = async (req, res) => {
-  try {
-    if (req.body.pass) req.body.pass = await bcrypt.hash(req.body.pass, 10);
-  await Account.updateOne({ user: req.session.acc.user }, req.body);
-  const doc = await Account.findOne({ user: req.session.acc.user }).lean();
-  req.session.acc = {
-    user: doc.user,
-    wins: doc.wins,
-    premium: doc.premium,
-  };
-  res.status(200).json(`Updated user: ${req.session.acc.user}`);
-  } catch (err) {
-    res.status(500).json({ error: 'An error occurred!' });
-  }
-  
-}
+// const update = async (req, res) => {
+//   try {
+//     if (req.body.pass) req.body.pass = await Account.generateHash(req.body.pass);
+//     await Account.updateOne({ user: req.session.acc.user }, req.body);
+//     const doc = await Account.findOne({ user: req.session.acc.user }).lean();
+//     req.session.acc = {
+//       user: doc.user,
+//       wins: doc.wins,
+//       premium: doc.premium,
+//     };
+//     res.status(200).json(`Updated user: ${req.session.acc.user}`);
+//   } catch (err) {
+//     res.status(500).json({ error: 'An error occurred!' });
+//   }
+// };
 
 module.exports = {
   loginPage,

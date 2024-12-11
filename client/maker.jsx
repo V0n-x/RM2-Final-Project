@@ -3,6 +3,7 @@ const React = require('react');
 import Select from 'react-select';
 const { useState, useEffect } = React;
 const { createRoot } = require('react-dom/client');
+import 'bulma/css/bulma.css';
 //
 // fetch stuff for poke API
 const urlPoke = "https://pokeapi.co/api/v2/pokemon/";
@@ -44,6 +45,7 @@ const handleAddMon = (e, onMonAdded) => {
 
     if (!species || !name || !evs || !ivs || !moves) {
         helper.handleError('All fields required!');
+        console.log(`species: ${species}, name: ${name}, evs: ${evs}, ivs: ${ivs}, moves: ${moves}`);
         return false;
     };
 
@@ -70,17 +72,17 @@ const MonForm = (props) => {
     if (!monToLoad) return <div>Loading...</div>;
 
     return (
-        <div>
+        <container>
             <form id='monForm'
                 onSubmit={(e) => handleAddMon(e, props.triggerReload)}
                 name='monForm'
                 action='/maker'
                 method='POST'
-                className='monForm'
             >
-                <div id='names'>
-                    <input id='name' type='text' placeholder={monToLoad.name}></input>
-                    <img src={monToLoad.sprites.front_default} alt={monToLoad.name} />
+                <div className='is-flex is-flex-direction-row '>
+                <div id='names' className='justify-content justify-content-center'>
+                    <input id='name' type='text' value={monToLoad.name}></input>
+                    <img src={monToLoad.sprites.front_default} alt={monToLoad.name}></img>
                     <MonList handleMon={handleMon} />
                 </div>
                 <div id='moveset'>
@@ -104,7 +106,7 @@ const MonForm = (props) => {
                 <div id='etc'>
                     <span id='level'>
                         <label htmlFor='level'>Level: </label>
-                        <input type='number' min='1' max='100' placeholder='50'></input>
+                        <input type='number' min='1' max='100' value='50'></input>
                     </span>
                     <span id='nature'>
                         <label htmlFor='nature'>Nature: </label>
@@ -115,7 +117,7 @@ const MonForm = (props) => {
                             isClearable={true}
                             isRtl={false}
                             isSearchable={true}
-                            defaultValue={"serious"}
+                            value={"serious"}
                             options={[
                                 { value: "adamant", label: "adamant" },
                                 { value: "bashful", label: "bashful" },
@@ -154,7 +156,7 @@ const MonForm = (props) => {
                             isClearable={true}
                             isRtl={false}
                             isSearchable={true}
-                            defaultValue={monToLoad.abilities[0].ability.name}
+                            value={monToLoad.abilities[0].ability.name}
                             options={monToLoad.abilities.map((ability) => ({
                                 value: ability.ability.name,
                                 label: ability.ability.name
@@ -162,40 +164,42 @@ const MonForm = (props) => {
                         />
                     </span>
                 </div>
-                <div id='stats'>
+                <div id='stats' className='is-flex is-flex-direction-column'>
                     <span>
                         <label htmlFor='hp'>HP: {monToLoad.stats[0].base_stat}</label>
-                        <input className='ev' type='number' min='0' max='252' placeholder='0'></input>
-                        <input className='iv' type='number' min='0' max='31' placeholder='31'></input>
+                        <input className='ev' type='number' min='0' max='252' value='0'></input>
+                        <input className='iv' type='number' min='0' max='31' value='31'></input>
                     </span>
                     <span>
                         <label htmlFor='atk'>Atk: {monToLoad.stats[1].base_stat}</label>
-                        <input className='ev' type='number' min='0' max='252' placeholder='0'></input>
-                        <input className='iv' type='number' min='0' max='31' placeholder='31'></input>
+                        <input className='ev' type='number' min='0' max='252' value='0'></input>
+                        <input className='iv' type='number' min='0' max='31' value='31'></input>
                     </span>
                     <span>
                         <label htmlFor='def'>Def: {monToLoad.stats[2].base_stat}</label>
-                        <input className='ev' type='number' min='0' max='252' placeholder='0'></input>
-                        <input className='iv' type='number' min='0' max='31' placeholder='31'></input>
+                        <input className='ev' type='number' min='0' max='252' value='0'></input>
+                        <input className='iv' type='number' min='0' max='31' value='31'></input>
                     </span>
                     <span>
                         <label htmlFor='spAtk'>Sp. Atk: {monToLoad.stats[3].base_stat}</label>
-                        <input className='ev' type='number' min='0' max='252' placeholder='0'></input>
-                        <input className='iv' type='number' min='0' max='31' placeholder='31'></input>
+                        <input className='ev' type='number' min='0' max='252' value='0'></input>
+                        <input className='iv' type='number' min='0' max='31' value='31'></input>
                     </span>
                     <span>
                         <label htmlFor='spDef'>Sp. Def: {monToLoad.stats[4].base_stat}</label>
-                        <input className='ev' type='number' min='0' max='252' placeholder='0'></input>
-                        <input className='iv' type='number' min='0' max='31' placeholder='31'></input>
+                        <input className='ev' type='number' min='0' max='252' value='0'></input>
+                        <input className='iv' type='number' min='0' max='31' value='31'></input>
                     </span>
                     <span>
                         <label htmlFor='speed'>Speed: {monToLoad.stats[5].base_stat}</label>
-                        <input className='ev' type='number' min='0' max='252' placeholder='0'></input>
-                        <input className='iv' type='number' min='0' max='31' placeholder='31'></input>
+                        <input className='ev' type='number' min='0' max='252' value='0'></input>
+                        <input className='iv' type='number' min='0' max='31' value='31'></input>
                     </span>
                 </div>
+                </div>
+                <input type='submit' value='Add Pokemon'></input>
             </form>
-        </div>
+        </container>
     )
 };
 
@@ -221,14 +225,14 @@ const MonList = ({ handleMon }) => {
             isSearchable={true}
             id='monSpecies'
             options={monNodes}
-            defaultValue={monNodes[5]}
             onChange={handleMon}
         />
-    )
+    );
 };
 
-const MoveList = ({ mon, slot }) => {
+const MoveList = ({ mon, slot, props }) => {
     const [moveNodes, setMoveNodes] = useState([]);
+    const [selection, setSelection] = useState(null);
 
     useEffect(() => {
         loadFetch(`${urlPoke}${mon}`, (data) => {
@@ -239,6 +243,12 @@ const MoveList = ({ mon, slot }) => {
         });
     }, [mon]);
 
+    const changeHandler = (m) => { 
+        console.log(m);
+        setSelection(m);
+        console.log(selection);
+    };
+
     return (
         <Select
             className='basic-single'
@@ -247,17 +257,54 @@ const MoveList = ({ mon, slot }) => {
             isClearable={true}
             isRtl={false}
             isSearchable={true}
-            id='movepool'
+            id={`move${slot + 1}`}
             options={moveNodes}
-            defaultValue={moveNodes[slot]}
+            value={selection}
+            onChange = {changeHandler}
         />
     );
 }
 
+const AddedMons = (props) => { 
+const [monList, setMonList] = useState([]);
+useEffect(() => {
+    const loadMons = async () => { 
+    const response = await fetch('/getMons');
+    const data = await response.json();
+    setMonList(data.monList);
+    };
+}, [props.triggerReload]);
+
+if(monList.length === 0) return <div>No Pokemon added yet!</div>;
+
+const addedNodes = monList.map((mon) => { 
+    return (
+        <div id={mon.name} className='is-flex'>
+            <h3>{mon.name} the {mon.species}</h3>
+            <container className='is-flex is-flex-direction-column'>
+                <span>Level: {mon.level}</span>
+                <span>Ability: {mon.ability}</span>
+                <span>Moves: {mon.moves.join(', ')}</span>
+                <span>Hidden Stats: HP / ATK / DEF / Sp. ATK / Sp. DEF/ Speed</span>
+                <span>EVs: {mon.evs.join(' / ')}</span>
+                <span>IVs: {mon.ivs.join(' / ')}</span>
+            </container>
+        </div>
+    )})
+
+    return (
+        <div id='addedMons'>
+            {addedNodes}
+
+        </div>
+    )
+};
+
+
 const App = () => {
     return (
         <div>
-            <MonForm defaultPokemon="pikachu" triggerReload={() => { }} />
+            <MonForm defaultPokemon="charizard" triggerReload={() => { }} />
         </div>
     )
 }
