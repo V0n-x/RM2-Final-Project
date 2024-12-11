@@ -2,6 +2,7 @@ const helper = require('./helper.js');
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { createRoot } = require('react-dom/client');
+import 'bulma/css/bulma.css';
 
 const handleLogin = (e) => {
     e.preventDefault();
