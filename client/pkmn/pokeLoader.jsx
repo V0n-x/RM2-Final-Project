@@ -1,4 +1,8 @@
 const { all } = require("underscore");
+const helper = require('../helper');
+const React = require('react');
+const { useState, useEffect } = React;
+const { createRoot } = require('react-dom/client');
 
 // fetch stuff for poke API
 const urlPoke = "https://pokeapi.co/api/v2/pokemon/";
@@ -33,10 +37,80 @@ const parseResult = (xhr) => {
     return json;
 }
 
+const App = () => {
+    return (
+        <div>
+            <DexList />
+        </div>
+    )
+}
+
+const DexList = () => {
+    const allMons= loadXHR(`${urlPoke}?offset=0&limit=1025`, parseResult);
+
+    const monNodes = allMons.map((mon) => {
+        return (
+            <span key={mon.id} className='monNode'>
+                <img src={mon.sprites.find('front_default')}></img>
+                <h3 className='monName'>{mon.id + ': ' + mon.name}</h3>
+            </span>
+        );
+    });
+
+    return (
+        <div className='monList'>
+            {document.querySelectorAll('.monNode').forEach((node) => {
+                node.addEventListener('click', (e) => {
+                    
+                });
+            })}
+            {monNodes}
+        </div>
+    )
+}
+
 // load the list
-const pokeList = () => {
+const PokeList = (props) => {
+    const [teams, setTeams] = useState(props.mons);
     
-    const allPoke = loadXHR(`${urlPoke}?offset=0&limit=1025`, parseResult);
-    
-    const pokeListItems = allPoke.results.map((poke) => {});
+    useEffect(() => {
+        const LoadTeamsFromServer = async () => {
+            const response = await fetch('/getTeams');
+            const data = await response.json();
+            setTeams(data.teams);
+        };
+        LoadTeamsFromServer();
+    }, [props.reloadTeams]);
+
+    if(teams.length === 0){
+        return (
+            <div className='teamList'>
+                <h3 className='emptyTeam'>No Teams Yet!</h3>
+            </div>
+        );
+    }
+
+    const teamNodes = teams.map((team) => {
+        return (
+            <div key={team._id} className='teamNode'>
+                {teams.map((t) => {
+                    <span>
+                        {t.mons.map((mon) => {
+                            let imgSrc = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/}'+mon.id+'.png';
+                            <span>
+                                {mon.name}
+                                <img src={imgSrc} alt={'Source: '+imgSrc}></img>
+                            </span>
+                        })};
+                    </span>
+                })}
+            </div>
+        );
+    });
+
+    return (
+        <div className='teamList'>
+            {teamNodes}
+        </div>
+    );
 }

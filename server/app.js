@@ -17,7 +17,7 @@ const router = require('./router.js');
 // https://socket.io/how-to/use-with-react
 const socketSetup = require('./io.js');
 
-const port = process.env.PORT || process.env.NODE_PORT || 3000;
+const port = process.env.PORT || process.env.NODE_PORT || 8000;
 
 const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/Showdown';
 
@@ -42,6 +42,11 @@ redisClient.connect().then(() => {
   app.use(compression());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
+
+  app.use((req, res, next) => {
+    res.setHeader("Content-Security-Policy", "default-src 'self'; connect-src 'self' https://pokeapi.co https://raw.githubusercontent.com;");
+    next();
+});
 
   app.use(session({
     key: 'sessionid',
