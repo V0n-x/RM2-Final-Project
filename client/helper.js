@@ -12,7 +12,7 @@ const handleError = (message) => {
     });
   
     const result = await response.json();
-    document.getElementById('domoMessage').classList.add('hidden');
+    document.getElementById('eMessage').classList.add('hidden');
   
     if(result.redirect) {
       window.location = result.redirect;
@@ -37,7 +37,7 @@ const handleError = (message) => {
     })
 
     const result = await response.json();
-    document.getElementById('domoMessage').classList.add('hidden');
+    document.getElementById('eMessage').classList.add('hidden');
 
     if(result.redirect) {
       window.location = result.redirect;
@@ -53,7 +53,7 @@ const handleError = (message) => {
   }
 
   const hideError = () => {
-    document.getElementById('domoMessage').classList.add('hidden');
+    document.getElementById('eMessage').classList.add('hidden');
   }
 
   module.exports = {
